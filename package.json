@@ -1,0 +1,28 @@
+{
+  "name": "base-cjk",
+  "version": "0.0.0",
+  "author": "Kyle Hensel",
+  "description": "BaseCJK is like Base64, but using CJK characters",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "repository": "https://github.com/k-yle/base-cjk",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc && rm -rf ./dist/__tests__",
+    "lint": "eslint .",
+    "test": "vitest && vitest bench"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.2",
+    "eslint-config-kyle": "^27.0.2",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "prettier": "eslint-config-kyle/prettier"
+}

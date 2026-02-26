@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    strategy:
+      matrix:
+        node-version:
+          - { v: 20 }
+          - { v: 22 }
+          - { v: 24 }
+          - { v: 25, isLatest: yes }
+
+    steps:
+      - name: ⏬ Checkout code
+        uses: actions/checkout@v6
+
+      - name: 🔢 Use Node.js ${{ matrix.node-version.v }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version.v }}
+
+      - run: npm install
+
+      - run: npm run lint
+
+      - run: npm run build
+
+      - run: npm test
+
+      - name: 📦 Publish
+        if: ${{ matrix.node-version.isLatest }}
+        run: |
+          npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
+          npm publish --provenance || true
+        env:
+          CI: true
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}

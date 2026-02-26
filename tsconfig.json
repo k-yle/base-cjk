@@ -1,0 +1,10 @@
+{
+  "extends": "eslint-config-kyle/tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["esnext", "dom"],
+    "rootDir": "src",
+    "outDir": "dist",
+    "noEmit": false
+  },
+  "include": ["src"]
+}
