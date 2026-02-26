@@ -7,6 +7,8 @@
 
 Similar to [base64](https://developer.mozilla.org/en-US/docs/Glossary/Base64) and [base45](https://datatracker.ietf.org/doc/html/rfc9285), _BaseCJK_ encodes a string into [CJK characters](https://en.wikipedia.org/wiki/CJK_characters).
 
+**[Live Preview](https://kyle.kiwi/base-cjk)**.
+
 Since there are over 64² CJK characters, we can combine two ASCII characters into a single CJK character.
 This transformation is performed after first converting the string to base64 in a unicode-safe way.
 
@@ -14,6 +16,12 @@ For example, `H` becomes `SA` in base64, which becomes `劒` in BaseCJK. Likewis
 The generated CJK characters are usually nonsensical in every language.
 
 Although BaseCJK appears to produce a shorter string then Base64, **it is not an efficient data format**, and there are vanishingly few situations where this is useful.
+
+### Install
+
+```sh
+npm i base-cjk
+```
 
 ### Usage
 

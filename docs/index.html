@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <title>BaseCJK</title>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/icon.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css"
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        --margin: 16px;
+        --padding: 16px;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: monospace;
+      }
+      body {
+        display: flex;
+      }
+      textarea {
+        margin: var(--margin);
+        padding: var(--padding);
+        border-radius: 8px;
+        width: calc(50vw - 2 * var(--margin) - 2 * var(--padding));
+        height: calc(100vh - 2 * var(--margin) - 2 * var(--padding) - 10px);
+        resize: none;
+      }
+      span {
+        position: fixed;
+        color: grey;
+        bottom: calc(2 * var(--margin));
+        cursor: help;
+      }
+      span:first-of-type {
+        right: calc(var(--margin) + var(--padding) + 50vw);
+      }
+      span:last-of-type {
+        right: calc(var(--margin) + var(--padding));
+      }
+    </style>
+  </head>
+  <body>
+    <textarea placeholder="Decoded" oninput="onChange(this)"></textarea>
+    <textarea placeholder="Encoded" oninput="onChange(this)"></textarea>
+    <span title="Codepoint count"></span>
+    <span title="Codepoint count"></span>
+    <script type="module">
+      const { decode, encode } = await import('https://esm.sh/base-cjk');
+
+      const [decoded, encoded] = document.querySelectorAll('textarea');
+      const [decodedCount, encodedCount] = document.querySelectorAll('span');
+
+      globalThis.onChange = (thīs) => {
+        if (thīs === encoded) {
+          try {
+            decoded.value = decode(encoded.value);
+          } catch {
+            decoded.value = '⚠️ Invalid ⚠️';
+          }
+        }
+        if (thīs === decoded) {
+          encoded.value = encode(decoded.value);
+        }
+
+        encodedCount.textContent = encoded.value.length;
+        decodedCount.textContent = decoded.value.length;
+
+        history.replaceState('', '', '#' + encoded.value);
+      };
+
+      // when the page first loads, use the value from the URL
+      const hash = decodeURIComponent(window.location.hash.slice(1));
+      encoded.value = hash;
+      onChange(encoded);
+    </script>
+    <a
+      class="github-fork-ribbon"
+      href="https://github.com/k-yle/base-cjk"
+      target="_blank"
+      rel="noopener noreferrer"
+      data-ribbon="Fork me on GitHub"
+      title="Fork me on GitHub"
+    >
+      Fork me on GitHub
+    </a>
+  </body>
+</html>
