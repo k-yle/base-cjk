@@ -47,14 +47,30 @@
   <body>
     <textarea placeholder="Decoded" oninput="onChange(this)"></textarea>
     <textarea placeholder="Encoded" oninput="onChange(this)"></textarea>
-    <span title="Codepoint count"></span>
-    <span title="Codepoint count"></span>
+    <span title="Grapheme count / Codepoint count"></span>
+    <span title="Grapheme count / Codepoint count"></span>
     <script type="module">
       const { decode, encode } = await import('https://esm.sh/base-cjk');
 
       const [decoded, encoded] = document.querySelectorAll('textarea');
       const [decodedCount, encodedCount] = document.querySelectorAll('span');
 
+      /** @param {string} string */
+      function calcLength(string) {
+        const codepointLength = string.length;
+        try {
+          const SEGMENTER = new Intl.Segmenter('und', {
+            granularity: 'grapheme',
+          });
+          const graphemeLength = [...SEGMENTER.segment(string)].length;
+          if (graphemeLength === codepointLength) return codepointLength;
+          return `${graphemeLength} / ${codepointLength}`;
+        } catch {
+          return codepointLength; // Intl.Segmenter is not supported
+        }
+      }
+
+      /** @param {HTMLTextAreaElement} thīs */
       globalThis.onChange = (thīs) => {
         if (thīs === encoded) {
           try {
@@ -67,8 +83,8 @@
           encoded.value = encode(decoded.value);
         }
 
-        encodedCount.textContent = encoded.value.length;
-        decodedCount.textContent = decoded.value.length;
+        encodedCount.textContent = calcLength(encoded.value);
+        decodedCount.textContent = calcLength(decoded.value);
 
         history.replaceState('', '', '#' + encoded.value);
       };
