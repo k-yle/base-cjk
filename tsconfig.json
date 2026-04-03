@@ -4,6 +4,11 @@
     "lib": ["esnext", "dom"],
     "rootDir": "src",
     "outDir": "dist",
+
+    // special config bc of emitDeclarationOnly
+    "composite": false,
+    "incremental": false,
+    "emitDeclarationOnly": true,
     "noEmit": false
   },
   "include": ["src"]

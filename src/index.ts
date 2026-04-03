@@ -35,5 +35,5 @@ export function encode(text: string): string {
     .join('');
 }
 
-/** @internal - exported only for unit tests */
+/** @internal - exported only for unit tests, not included in dist */ /* @__PURE__ */
 Reflect.set(encode, Symbol.for('debug'), { ε, Ω });
